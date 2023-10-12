@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Slideshow</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        #imageContainer {
+            text-align: center;
+        }
+        img {
+            max-width: 500px;
+            display: block;
+            margin: 0 auto;
+        }
+        button {
+            margin: 10px;
+            text-align: center;
+        }
+        #buttonContainer {
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="imageContainer">
+        <img id="slideshowImage" img src="images/image1.jpg" alt="Slideshow Image">
+    </div>
+    <div id="buttonContainer">
+        <button id="startButton">Start</button>
+        <button id="stopButton">Stop</button>
+    </div>
+
+    <script>
+        const images = [
+            "image1.jpg",
+            "image2.jpg",
+            "image3.jpg",
+            "image4.jpg",
+            "image5.jpg"
+        ];
+
+        let currentIndex = 0;
+        let slideshowInterval;
+
+        function startSlideshow() {
+            currentIndex = 0;
+            playSlideshow();
+            $("#startButton").prop("disabled", true);
+            $("#stopButton").prop("disabled", false);
+        }
+
+        function playSlideshow() {
+            if (currentIndex >= images.length) {
+                currentIndex = 0;
+            }
+
+            const nextImage = `images/${images[currentIndex]}`;
+
+            $("#slideshowImage").fadeOut(500, function() {
+                $(this).attr("src", nextImage).fadeIn(500);
+                currentIndex++;
+                slideshowInterval = setTimeout(playSlideshow, 2000); // Change image every 2 seconds
+            });
+        }
+
+        function stopSlideshow() {
+            clearTimeout(slideshowInterval);
+            $("#startButton").prop("disabled", false);
+            $("#stopButton").prop("disabled", true);
+        }
+
+        $("#startButton").click(startSlideshow);
+        $("#stopButton").click(stopSlideshow);
+    </script>
+</body>
+</html>
